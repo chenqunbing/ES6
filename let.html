@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*let申明的变量只在let命令的代码块中有效*/
+			{
+				var a=1;
+				let b=2;
+			}
+			console.log(a); //1
+			console.log(b); //b is not defined
+			
+			/*for循环计数器很适合用let*/
+			for(var i=0;i<4;i++){
+				
+			}
+			console.log(i) //4
+			
+			for(let i=0;i<4;i++){
+				
+			}
+			console.log(i); //i is not defined
+
+			var a=[];
+			for(var i=0;i<10;i++){
+				a[i]=function(){
+					console.log(i);
+				}
+			}
+			a[6]();//10如果使用let定义i则输出6
+			
+			for(let i=0;i<3;i++){
+				let i='abc';
+				console.log(i);
+			}
+			//abc
+			//abc
+			//abc
+			
+			/*let不存在变量提升，所以必须先定义再使用*/
+			
+			/*暂时性死区*/
+			var temp='123';
+			if(true){
+				temp='abc';
+				let temp;//在这个代码块中，使用let申明变量之前，该变量都是不可用的，所以，上面一块区域在语法上称为“暂时性死区
+				console.log(temp); //temp is not defined
+			}
+			
+			/*let不允许在同一个作用域内申明同一个变量*/
+			
+			/*块级作用域*/
+			//没有块级作用域的场景一：变量提升导致内层变量可能覆盖外层变量
+			var temp=new Date();
+			function f(){
+				console.log(temp);
+				if(false){
+					var temp='Hello World!'
+				}
+			}
+			f(); //undefined
+			//场景二：用来技术的循环变量泄露为全局变量
+			var s='hello';
+			for(var i=0;i<s.length;i++){
+				console.log(s[i]);  //h e l l o
+			}
+			console.log(i); //5
+			
+			/*ES6的块级作用域*/
+			//1.不存在变量提升
+			//2.允许块级作用域的任意嵌套
+			//3.外层作用域无法读取内层作用域的变量
+			//4.内层作用域可以定义外层作用域同名的变量
+			
+			/*块级作用域和函数申明*/
+			//es5规定函数只能在顶层作用域和函数作用域中申明，不能再块级作用域中申明
+			//es6明确允许在块级作用域中申明函数
+			function f(){
+				console.log("I am outer function!");
+			}
+			(function(){
+				if(false){
+					function f(){
+						console.log("I am inner function!");
+					}
+				}
+				console.log(typeof f) //undefined
+				f();
+				
+			}());  //f is not a function
+			
+			//上面的代码执行过程如下：(浏览器的ES6环境)
+			function f(){
+				console.log("I am outer function!");
+			}
+			(function(){
+				var f=undefined;
+				if(false){
+					function f(){
+						console.log("I am inner function!");
+					}
+				}
+				console.log(typeof f) //undefined
+				f();
+				
+			}());  //f is not a function
+			
+			//考虑到环境导致的行为差异太大，应该避免在块级作用域内声明函数。
+			//如果确实需要，也应该写成函数表达式，而不是函数声明语句。
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*模式匹配*/
+			let [foo,[[bar],baz]]=[1,[[2],3]];
+			console.log(foo);//1
+			console.log(bar);//2
+			console.log(baz);//3
+			/*如果解构不成功，变量的值九尾undefined*/
+			let [aaa]=[];
+			console.log(aaa) //undefined
+			/*对于Set结构，也可以使用结构赋值*/
+			let [x,y,z]=new Set(['a','b','c']);
+			console.log(x); //a
+			/*解构赋值允许使用默认值,只有当一个数组成员严格等于undefined，默认值才会生效*/
+			let [c,d=1]=['a',undefined];
+			console.log(c); //a
+			console.log(d); //1
+		</script>
+	</body>
+</html>

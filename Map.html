@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*Object结构提供了字符串-值的对应，Map结构提供了值-值的对应，是一种更完善的Hash结构，
+			 如果你需要键值对的解构，Map是更好的选择*/
+			const m=new Map();
+			const o={
+				"name":"Mike"
+			};
+			m.set(o,"content");
+			console.log(m);  //Map(1) {{"name":"Mike"} => "content"}
+			console.log(m.get(o));// content
+			
+			const map=new Map([['name','Mike'],['title','authour']]);
+			console.log(map); //Map(2) {"name" => "Mike", "title" => "authour"}
+			
+			/*分别使用Set和Map作为Map构造函数的参数*/
+			const set=new Set([['foo',1],['bar',2]]); 
+			const map1=new Map(set);
+			console.log(set); //{['foo',1],['bar',2]}
+			console.log(map1); // Map(2) {"foo"=>1,"bar"=>2}
+			
+			const map2=new Map([['name','NieNie']]);
+			const map3=new Map(map2);
+			console.log(map2); //Map(1) {"name"=>"NieNie"}
+			console.log(map3); //Map(1) {"name"=>"NieNie"}
+			
+			/*Map的键值实际上是跟内存进行绑定的，只要内存地址不一样，就会被视为两个键*/
+			const map5=new Map();
+			map5.set(['a'],111);
+			console.log(map5.get(['a']));// undefiend
+			const map4=new Map();
+			const k1=['a'];
+			const k2=['a'];
+			map4.set(k1,111);
+			map4.set(k2,222);
+			console.log(map4); // Map(2) {['a']=>111,['a']=>222}
+			
+/*			Map 结构原生提供三个遍历器生成函数和一个遍历方法。
+			keys()：返回键名的遍历器。
+			values()：返回键值的遍历器。
+			entries()：返回所有成员的遍历器。
+			forEach()：遍历 Map 的所有成员。*/
+			const map11=new Map([['F','no'],['T','yes']]); //Map(2) {'F'=>'no','T'=>'yes'}
+			for(let item of map11.keys()){
+				console.log(item);// F T
+			}
+			for(let item of map11.values()){
+				console.log(item); //no yes
+			}
+			for(let [key,value] of map11.entries()){
+				console.log(key,value); // F no T yes
+			}
+			map11.forEach(function(n){
+				console.log(n); //no yes
+			});
+			
+		</script>
+	</body>
+</html>

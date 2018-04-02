@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*Reflect.get(target,name,receiver),
+			 * 如果name属性部署了读取函数，则读取函数的this绑定receiver*/
+			var obj={
+				foo:1,
+				bar:2,
+				get baz(){
+					return this.foo+this.bar;
+				}
+			}
+			var obj1={
+				foo:2,
+				bar:5
+			};
+			console.log(Reflect.get(obj,'foo')) //1
+			Reflect.get(obj,'bar');//2
+			Reflect.get(obj,'baz'); //3
+			console.log(Reflect.get(obj,'baz',obj1));//7
+			
+			/*Reflect.set(target, name, value, receiver)*/
+			var myObj={
+				foo:1,
+				set bar(value){
+					return this.foo=value;
+				}
+			};
+			var myReceiverObj={
+				foo:2
+			};
+			myObj.foo;//1
+			Reflect.set(myObj,'foo',3);
+			console.log(myObj.foo);//3
+			Reflect.set(myObj,'bar',8);
+			console.log(myObj.foo);//8
+			Reflect.set(myObj,'bar',7,myReceiverObj);
+			console.log(myObj.foo);// 8
+			console.log(myReceiverObj.foo);//7
+		</script>
+	</body>
+</html>

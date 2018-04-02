@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*Proxy:在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这个拦截
+			 * 因此提供了一种机制，可以对外界的访问进行过滤和改写
+			 */
+			/*使用方法  var p = new Proxy(target, handler); */
+			var target={
+				name:'obj'
+			};
+			var logHandler={
+				get:function(target,key){
+					console.log(`${key}被读取了!`);
+					return target[key];
+				},
+				set:function(target,key,value){
+					console.log(`${key}被设置为了${value}`);
+					target[key]=value;
+				}
+			}
+			var targetWithValue=new Proxy(target,logHandler);
+			console.log(target.name);//obj
+			target.name="NieNie";
+			console.log(target.name);//NieNie
+			
+			/*实现虚拟属性，下面的demo中，实现了虚拟的fullName属性*/
+			var person={
+				firstName:'张',
+				lastName:'小白'
+			};
+			var proxyedPerson=new Proxy(person,{
+				get:function(target,key){
+					if(key=='fullName'){
+						return [target.firstName,target.lastName].join(' ');
+					}
+					return target[key];
+				},
+				set:function(target,key,value){
+					if(key=='fullName'){
+						var fullNameInfo=value.split(' ');
+						target.firstName=fullNameInfo[0];
+						target.lastName=fullNameInfo[1];
+						
+					}else{
+						target[key]=value;
+					}
+				}
+			});
+			
+			
+			console.log('姓:%s, 名:%s, 全名: %s', proxyedPerson.firstName, proxyedPerson.lastName, proxyedPerson.fullName);// 姓:张, 名:小白, 全名: 张 小白
+			proxyedPerson.fullName = '李 小露';
+			console.log('姓:%s, 名:%s, 全名: %s', proxyedPerson.firstName, proxyedPerson.lastName, proxyedPerson.fullName);// 姓:李, 名:小露, 全名: 李 小露
+			console.log('**********');
+
+		</script>
+	</body>
+</html>

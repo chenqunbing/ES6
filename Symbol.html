@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*ES6引入的一种新的数据类型 Symbol
+			 Symbol值通过Symbol函数生成，凡是属性名属于Symbol类型，就都是独一无二的，不会与其他的属性名发生冲突*/
+			const s1=Symbol();
+			console.log(s1)// Symbol()
+			console.log(typeof s1);//symbol
+			/*在Symbol函数传递一个参数的主要原因是为了区分Symbol实例，不然实例都输出Symbol（），难以辨别*/
+			const s2=Symbol('s2'); //Symbol('s2')
+			const s3=Symbol('s3'); //Symbol('s3')
+			/*如果Symbol的参数是一个字符串，就会调用它的toString（）方法，
+			 * 将其转换为字符串，然后再生产一个Symbol值*/
+			const obj={
+				toString(){
+					return 'abc';
+				}
+			}
+			const s4=Symbol(obj);
+			console.log(s4);//Symbol(abc)
+			
+			/*作为属性名的Symbol,注意Symbol值作为属性名时，不能使用.运算符*/
+			let mySymbol=Symbol();
+			//1
+			const obj={};
+			obj[mySymbol]="hello";
+			//2
+			const obj={
+				[mySymbol]:'Hello'
+			};
+			//3
+			const obj={};
+			obj.defineProperty(obj,mySymbol,{value:'hello'});
+			//以上三种都得到下面的结果
+			obj[mySymbol]// "hello"
+			
+			/*消除魔术字符串
+			 魔术字符串：在代码中出现多次，与代码形成强耦合的具体的字符串或者数值
+			 风格良好的代码，应该尽量消除这一类的字符串，由含义清晰的变量代替
+			 */
+			function getArea(shape,options){
+				let area=0;
+				switch(shape){
+					case 'Triangle': //
+						area=0.5*options.width*options.height;
+					break;
+					default:
+						area=0;
+				}
+				
+				return area;
+			}
+			console.log(getArea('Triangle',{width:100,height:100}));//5000
+			/*上面代码中，字符串Triangle就是一个魔术字符串。它多次出现，与代码形成“强耦合”，
+			 * 不利于将来的修改和维护。修改为下面代码：*/
+			const shapeType={
+				triangle:'Triangle'
+//				triangle:Symbol()
+			}
+			function getArea(shape,options){
+				let area=0;
+				switch(shape){
+					case shapeType.triangle: //
+						area=0.5*options.width*options.height;
+					break;
+					default:
+						area=0;
+				}
+				
+				return area;
+			}
+			console.log(getArea(shapeType.triangle,{width:100,height:100}));//5000
+			/*仔细分析会发现，shapeType.triangle的值等于什么并不重要，重要的是不发生冲突，
+			 * 所以，在这里我们可以使用Symbol数据类型，修改如上面注释部分*/
+			
+			/*属性名的遍历Object.getOwnPropertySymbols()方法返回一个数组，
+			 * 可以获得对象的所有Symbol属性名*/
+			const obj={};
+			const a=Symbol('a');
+			const b=Symbol('b');
+			obj[a]='hello';
+			obj[b]='world';
+			console.log(obj);//{Symbol(a): "hello", Symbol(b): "world"}
+			const objectSymbols=Object.getOwnPropertySymbols(obj);
+			console.log(objectSymbols);//(2) [Symbol(a), Symbol(b)]
+			
+			
+		</script>
+	</body>
+</html>

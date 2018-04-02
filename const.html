@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*const申明一个只读的变量，一旦申明，常量的值就不能再改变*/
+			/*也就意味着const一旦申明变量就必须立即初始化，不能留到以后赋值*/
+			/*const作用域和let相同，只在申明所在的块级作用域中有效*/
+			/*const申明的变量也不存在变量提升，所以也存在暂时性死区*/
+			/*const申明的变量和let一样不能重复使用，也就是说，在同一个作用域内，不能重复申明同一个变量*/
+			/*const本质：const实际上保证的，并不是变量的值不得改动，而是变量指向的那个内存地址不能改动*/
+			const foo={};
+			foo.name="Mike";
+			foo.age="12";
+			console.log(foo);  //{name: "Mike", age: "12"}
+			//foo指向另外一个对象
+			foo={}; // TypeError: "foo" is read-only
+			
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*变量的属性没有次序，变量必须与属性同名，才能取到真正的值*/
+			let {foo,bar}={bar:"Mike",foo:"Lili"};
+			console.log(foo);//Lili
+			console.log(bar);//Mike
+			/*当变量名和属性名不一致的时候，写法如下：*/
+			let {first:f,last:l}={first:'hello',last:'world'};
+			console.log(f); //hello
+			console.log(l); //world
+//			console.log(first) //first is not defined
+			/*解构用于嵌套解构的对象*/
+			let obj={
+				p:[
+					'hello',
+					{y:'world'}
+				]
+			};
+			//对象解构中包含数组解构（注意：第二个p是模式，不是变量，因此不会被赋值）
+			let {p,p:[x,{y}]}=obj;
+			console.log(p); //['hello',{y:'world'}]
+			console.log(x); //hello
+			console.log(y); //world
+			/**/
+		</script>
+	</body>
+</html>

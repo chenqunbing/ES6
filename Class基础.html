@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//es5
+			function Point(x,y){
+				this.x=x;
+				this.y=y;
+			}
+			Point.prototype.toString=function(){
+				return '('+this.x+','+this.y+')';
+			}
+			var point=new Point(1,2);
+			console.log(point.toString()); //(1,2)
+			console.log(point.hasOwnProperty('x')); //true
+//			//es6
+			class Point{
+				constructor(x,y){
+					this.x=x;
+					this.y=y;
+				}
+				toString(){
+					return '('+this.x+','+this.y+')';
+				}
+			}
+			var point=new Point(1,2);
+			console.log(point.toString());//(1,2)
+			/*class表达式*/
+			const MyClass=class Me{
+				getClassName(){
+					return Me.name;
+				}
+			}
+			const inst=new MyClass();
+			console.log(inst.getClassName());//Me
+			const myClass=class{
+				
+			}
+//			/*采用class表达式可以直接写出立即执行的class*/
+			let person=new class{
+				constructor(name){
+					this.name=name;
+				}
+				sayName(){
+					console.log(this.name);
+				}
+			}("Mike");
+			person.sayName(); //Mike
+			/*私有方法和私有属性:es6里面不允许使用私有方法和私有属性*/
+			/*this指向*/
+			/*类的方法内部包含有this，它默认指向类的实例，但是一旦单独使用该方法，则会发生报错*/
+			class Logger{
+				constructor(){
+//					this.printName=this.printName.bind(this);  //方法一
+					this.printName=(name='Mike')=>{   //方法二
+						this.print(`hello ${name}`)
+					}
+				}
+				printName(name="Mike"){
+					this.print(`hello ${name}`);
+				}
+				
+				print(text){
+					console.log(text);
+				}
+			}
+			var logger=new Logger();
+			logger.printName();//hello Mike
+//			/*如果单独将printName方法拿出来用，
+//			 * this会指向该方法运行时所在的环境，因为找不到print方法而报错
+//			 * 解决方法一：在构造函数中绑定this
+//			 * 解决方法二：使用箭头函数*/
+			const {printName}=logger;
+			printName();// TypeError: Cannot read property 'print' of undefined
+			
+			/*class的静态方法：在方法前面加上static关键字，
+			 * 那么这个方法就不会被实例所继承，而只能通过类来调用，但是静态方法可以被子类继承*/
+			class Foo{
+				static classMethod(){
+					console.log("Hello!");
+				}
+			}
+			Foo.classMethod();  //Hello!
+			var foo=new Foo();
+			foo.classMethod();//  foo.classMethod is not a function
+			/*静态方法中的this指向的是类而不是实例*/
+			class Foo{
+				static f1(){
+					console.log(this)
+					this.f2();
+				}
+				f2(){
+					console.log("Hello!");
+				}
+				static f2(){
+					console.log("world!");
+				}
+			}
+			Foo.f1();// world
+			
+			/*静态方法也可以通过super上调用*/
+			class Foo{
+				static f1(){
+					return "Hello"
+				}
+			}
+			class Bar extends Foo{
+				static f2(){
+					return super.f1()+"World";
+				}
+			}
+			console.log(Bar.f2());// HelloWorld
+			
+		</script>
+	</body>
+</html>

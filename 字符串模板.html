@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	</head>
+	<body>
+		<div id="result"></div>
+		<script type="text/javascript">
+			var basket={
+				count:12,
+				onSale:13
+			};
+			$('#result').append("There are "+basket.count+" item in your basket,and there are "+basket.onSale+" items on sale!");
+			
+			$('#result').append(`There are ${basket.count} item in your basket`);
+			
+			let greeting=`\`you\`world`;
+			$('#result').append(greeting);
+			$('#result').html(`
+				<ul>
+					<li>One</li>
+					<li>Two</li>
+					<li>Three</li>
+				</ul>
+				`.trim());
+			function fun(){
+				return "Hello World!";
+			}
+			console.log(`AA ${fun()} BB`)
+			
+			/*模板字符串的嵌套*/
+			const temlp=addrs=>`
+				<table>
+					${addrs.map(addr=>`
+						<tr><td>${addr.first}</tr></td>
+						<tr><td>${addr.last}</tr></td>
+				`)}
+				</table>
+			`
+				
+			var data=[
+				{first:"one",last:"one"},
+				{first:"two",last:"two"},
+			];
+			console.log(temlp(data));
+//			$('#result').html(temlp(data));
+		</script>
+	</body>
+</html>

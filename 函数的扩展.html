@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*es6之前我们为函数参数指定默认值的方法*/
+			function log(x,y){
+				y=y||"world";
+				console.log(x,y)
+			}
+			log("hello");//hello world
+			log("hello","React")
+			/*这里就是这种方法的弊端所在：如果该参数赋值了，但是对应的布尔值
+			 * 是false，则该值不起作用，取用的还是默认值*/
+			log("hello",'');//hello world
+			/*es6方法直接为函数的参数指定默认值*/
+			function log1(x,y='world'){
+				console.log(x,y);
+			}
+			log1("hello",'');//hello
+			/*参数默认值的惰性求值*/
+			let x=99;
+			function foo(p=x+1){
+				console.log(p);
+			}
+			foo(); //100
+			x=100;
+			foo(); //101
+			/*结构赋值默认值*/
+			function foo1({a=5,b=3}){
+				console.log(a,b);
+			}
+			foo1({a:2});
+		</script>
+	</body>
+</html>

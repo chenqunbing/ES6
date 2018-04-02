@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*解构赋值时，如果右边是数值或者是布尔值的时候，会先将右边转换为对象*/
+			//下面的代码中，数值和布尔值的包装对象都有toString属性，所以可以取得值
+			//请注意，因为undefined和null无法转换为对象，所以，如果右边是这两个则会出错
+			const {toString:s}=123;
+			console.log(s); //ƒ toString() { [native code] }
+			const {toString:m}=true; //ƒ toString() { [native code] }
+			console.log(m);
+			
+		</script>
+	</body>
+</html>

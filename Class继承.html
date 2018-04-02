@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*class通过extends来实现继承,并且静态方法也可以被子类继承*/
+			class Point{
+				constructor(x,y){
+					this.x=x;
+					this.y=y;
+				}
+				toString(){
+					return this.x+" "+this.y;
+				}
+				static sayHello(){
+					console.log("Hello!");
+				}
+			}
+			class ColorPoint extends Point{
+				constructor(x,y,color){
+					super(x,y);  //必须要，获取this，必须在子类的构造函数中
+					this.color=color;
+				}
+				toString(){
+					return this.color+" "+super.toString();
+				}
+			}
+			let colorPoint=new ColorPoint(1,2,"red");
+			console.log(colorPoint.toString());
+			ColorPoint.sayHello(); //Hello!
+			/*Object.getPrototypeOf方法可以从子类上获得父类*/
+			console.log(Object.getPrototypeOf(ColorPoint)===Point);//true
+			
+			/*super关键字*/
+			/*一：super作为函数调用时，代表父类的构造函数，但是返回的是子类的实例，即super中的this指向的是子类*/
+			/*二：super作为对象，在普通方法中指向父类的原型对象，而在静态方法中，指向父类*/
+			class A{
+				p(){
+					return "aaa";
+				}
+			}
+			class B extends A{
+				constructor(){
+					super();
+				}
+				sayName(){
+					return "Hello "+super.p();
+				}
+			}
+			let b=new B(); 
+			console.log(b.sayName());//Hello aaa
+			/*通过super调用父类的方法时，方法内部的this指向子类的实例*/
+			class C{
+				constructor(){
+					this.x=1;
+				}
+				print(){
+					console.log(this.x);
+				}
+			}
+			class D extends C{
+				constructor(){
+					super();
+					this.x=3;
+				}
+				m(){
+					super.print();
+				}
+			}
+			let d=new D();
+			d.m();// 3
+			
+			/*如果super作为对象用在静态方法中，这时的super将指向父类，而不是父类原型*/
+		</script>
+	</body>
+</html>

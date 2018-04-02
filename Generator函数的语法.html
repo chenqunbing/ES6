@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*Generator函数的理解：
+			 一：Generator函数是一个状态机，封装了多个内部状态
+			 二：是一个遍历器对象生产函数
+			 */
+			function* helloWorldGenerator(){
+				yield 'hello';
+				yield 'world';
+				return 'ending';
+			}
+			var hw=helloWorldGenerator();
+			console.log(hw.next());// {value: "hello", done: false}
+			console.log(hw.next());//{value: "world", done: false}
+			console.log(hw.next()); //{value: "ending", done: true}
+			console.log(hw.next()); //{value: undefined, done: true}
+			/*Generator可以不使用yield表达式，这样就成为了一个单纯的暂缓执行函数*/
+			function* f(){
+				console.log("Hello World!");
+			}
+			var f=f();
+			setTimeout(function(){
+				f.next();
+			},1000);
+			
+			var arr=[1,[[2,3],4],[5,6]];
+			var flat=function* (a){
+				for(var i=0;i<a.length;i++){
+					var item=a[i];
+					if(typeof item!='number'){
+						yield* flat(item);
+					}else{
+						yield item;
+					}
+				}
+			}
+			for(var f of flat(arr)){
+				console.log(f); //1 2 3 4 5 6
+			}
+			/*next方法的参数*/
+			/*for of 循环*/
+			function* foo(){
+				yield 1;
+				yield 2;
+				yield 3;
+				return 4;
+			}
+			for(let i of foo()){
+				console.log(i);//1 2 3 
+			}
+			/*Generator.prototype.throw()*/
+			var g=function* (){
+				try{
+					yield;
+				}catch(e){
+					console.log('在内部捕获'+e);
+				}
+			}
+			var i=g();
+			i.next();
+			try{
+				i.throw('a'); //在内部捕获a
+				i.throw('b'); //在外部捕获b
+			}catch(e){
+				console.log('在外部捕获'+e);
+			}
+			
+			//taskDef是一个生成器函数
+			function* taskDef(){
+				yield 1;
+				yield 2;
+				yield 3;
+				return 4;
+			}
+			function run(taskDef){
+				let task=taskDef();
+				let result=task.next();
+				function step(){
+					if(!result.done){
+						task.next();
+						step();
+					}
+				}
+				step();
+			}
+			
+			run(taskDef);
+		</script>
+	</body>
+</html>

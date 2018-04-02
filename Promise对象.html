@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*Promise是异步编程的一种解决方案
+			 * Promise有两个特点：对象的状态不受外界的影响；一旦状态改变就不会再变
+			 * ES6规定Promise对象是一个构造函数，用来生产Promise实例
+			 */
+			const promise=new Promise(function(resolve,reject){
+				//...some code
+				if(/*异步操作成功*/){
+					resolve(value);
+				}else{
+					reject(error);
+				}
+			})
+			/*Promise实例生成之后，可以使用then方法分别制定resolved状态和rejected状态的回调函数*/
+			promise.then(function(value){
+				//success
+			},function(error){
+				//error
+			});
+			
+			/*一个简单Promise对象的案例：*/
+			function timeout(ms){
+				return new Promise(function(resolve,reject){
+					return setTimeout(resolve,ms,'done');
+				})
+			}
+			timeout(1000).then(function(value){
+				console.log(value); //done
+			})
+			
+			/*Promise新建之后会立即执行，然后，then方法指定的回调函数必须在当前脚本所有任务执行完毕之后进行*/
+			let promise=new Promise(function(resolve,reject){
+				console.log('promise!');
+				resolve();
+			})
+			promise.then(function(){
+				console.log('resolved!');
+			})
+			console.log('Hi!');
+			/*输出的顺序为： promise! Hi! resolved! */
+			
+			/*异步加载图片：加载成功调用resolve方法，加载失败调用reject方法*/
+			function loadImageAsync(url){
+				return new Promise(function(resolve,reject){
+					
+					const image=new Image();
+					
+					image.onload=function(){
+						resolve(image);
+					}
+					
+					image.onerror=function(){
+						reject(new Error('Could not find image at'+url));
+					}
+					
+					image.src=url;
+				})
+			}
+			const img=loadImageAsync('images/1.jpg');
+			img.then(function(value){
+				document.body.append(value); 
+				console.log(value);   // <img src="images/1.jpg">
+			})
+			
+			/*Promise对象实现Ajax操作*/
+			const getJSON=function(url){
+				const promise=new Promise(function(resolve,reject){
+					function handle(){
+						if(this.readyState!=4){
+							return ;
+						}
+						if(this.status==200){
+							resolve(this.response);
+						}else{
+							reject(new Error(this.statusText));
+						}
+					}
+					const client=new XMLHttpRequest();
+					client.open('GET',url);
+					client.onreadystatechange=handle;
+					client.setRequestHeader("Access","application/json");
+					client.send();
+				})
+				
+				return promise;
+			}
+			getJSON('post.json').then(function(json){
+				console.log("content:"+json);   
+		//content:{"name":"Mike","age":12,"sex":"male","score":34}
+			},function(error){
+				console.log("出错了",error)
+			})
+			
+			/*resolve函数的参数除了正常值还可能是另外一个Promise的实例*/
+			
+			const p1=new Promise(function(resolve,reject){
+				setTimeout(()=>reject(new Error('fail')),3000);
+			})
+			const p2=new Promise(function(resolve,reject){
+				setTimeout(()=>resolve(p1),1000);
+			})
+			
+			p2.then(result=>console.log(result)) //Uncaught (in promise) Error: fail
+				.catch(error=>console.log(error));
+				//Error: fail
+				
+			/*Promise.prototype.catch()*/
+			const promise=new Promise(function(resolve,reject){
+				reject(new Error('test')); //下面这种写法也是可以的
+//				throw new Error('test');
+			})
+			promise.catch(function(error){
+				console.log(error);   //Error: test
+			})
+	</script>
+	</body>
+</html>

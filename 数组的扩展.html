@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*扩展运算符*/
+			console.log(...[1,2,3]); //1,2,3
+			/*该运算符主要用于函数调用*/
+			function push(array,...items){
+				array.push(...items);
+			}
+			let array1=[1,2,3];
+			let array2=[4,5,6];
+			array1.push(...array2);// [1, 2, 3, 4, 5, 6]
+			push(array1,...array2);  //// [1, 2, 3, 4, 5, 6]
+			console.log(array1);
+			function add(x,y){
+				return x+y;
+			}
+			const number=[4,5];
+			console.log(add(...number)); //9
+			
+			/*替代函数的apply方法*/
+			//es5
+			function f(x,y,z){
+				console.log(x);
+			}
+			const num=[1,2,3];
+			f.apply(null,num); //1
+			f.call(null,...num);//1
+			//es6
+			f(...num);//1
+			
+			/*扩展运算符的应用*/
+			//1.克隆
+			const a1=[1,2,3];
+			const a2=a1.concat();//es5
+//			const a2=[...a1]; //es6
+//			const [...a2]=a1; //es6
+			//合并数组
+//			const array1=[1,2,3];
+//			const array2=[4,5,6];
+//			const array3=[7,8];
+//			array1.concat(array2,array3);//es5
+//			[...array1,...array2,...array3];//es6
+			//与解构赋值结合，注意，如果扩展运算符用于给数组赋值，只能放在参数的最后一位，否则会报错
+			const [first,...rest]=[1,2,3,4,5];
+			console.log(first); //1
+			console.log(rest);// [2,3,4,5]
+			//字符串：扩展运算符可以将字符串转换为数组
+			console.log([...'hello']);// ["h", "e", "l", "l", "o"]
+			
+			/*Array.of用于将一组值转换为数组*/
+			console.log(Array.of(1,2,3)); // [1, 2, 3]
+			
+			/*数组实例的copyWithin方法*/
+			var a=[1,2,3,4,5].copyWithin(0,3);//[4,5,3,4,5]
+			console.log(a);
+			/*数组实例的find和findIndex*/
+			console.log([1,2,-3,4].find(n=>n<0));//-3
+			console.log([1,2,-3,4].findIndex(n=>n<0))//2 位置
+			
+			function f(v){
+				return v>this.age;
+			}
+			let person={
+				name:"Mike",
+				age:12
+			};
+			console.log([1,2,22,34,5].find(f,person));//22
+			
+			/*数组实例的fill方法*/
+			console.log([1,2,3].fill(7));// [7, 7, 7]
+			console.log(new Array(3).fill(7));// [7, 7, 7]
+			console.log([1,2,3].fill(7,1,2));//[1,7,3]
+			/*如果填充的类型为对象，那么被赋值的是同一个内存地址的对象，而不是深拷贝的对象*/
+			let ary=new Array(3).fill({name:"Mike"});
+			console.log(ary);//  [{name:"Mike"},{name:"Mike"}, {name:"Mike"}]
+			ary[0].name="Ben";
+			console.log(ary);// [{name:"Ben"},{name:"Ben"}, {name:"Ben"}]
+			
+			/*数组实例的entries(),keys(),values()*/
+			for(let index of [1,2,3].keys()){
+				console.log(index); //0 1 2
+			}
+//			for(let elem of ["a","b"].values()){
+//				console.log(elem); //1 2 3
+//			} 
+			for(let [index,elem] of ['a','b'].entries()){
+				console.log(index,elem); //0 "a"  1  "b"
+			}
+		</script>
+	</body>
+</html>

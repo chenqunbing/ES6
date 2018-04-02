@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*es6允许直接写入变量和函数作为对象的属性和方法*/
+			const foo='bar';
+			const baz={fso:foo};
+			console.log(baz);// {fso: "bar"}
+			
+			function f(x,y){
+				return {x,y};
+			}
+			console.log(f(1,2)); //{x: 1, y: 2}
+			/*方法简写*/
+			const o={
+				sayHello(){
+					console.log("Hello!");
+				}
+			}
+			o.sayHello(); //Hello!
+			
+			let birth='2010/2/2';
+			const person={
+				name:"Lili",
+				birth,
+				sayHello(){
+					console.log("this.name");
+				}
+			}
+			
+			function getPoint(){
+				const x=1;
+				const y=4;
+				return {x,y};
+			}
+			console.log(getPoint());//{x: 1, y: 4}
+			
+			const a={
+				'first name':"Nie"
+			}
+			console.log(a['first name']); //Nie
+			/*Object.assign*/
+			const target={a:1};
+			const source1={b:2};
+			const source2={c:3};
+			Object.assign(target,source1,source2);
+			console.log(target);//{a: 1, b: 2, c: 3}
+			
+		</script>
+	</body>
+</html>
